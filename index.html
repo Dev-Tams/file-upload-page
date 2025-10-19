@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FileUpload API – Go + Gin REST API</title>
+  <link rel="icon" href="https://go.dev/favicon.ico" type="image/x-icon" />
+  <style>
+    :root {
+      --primary: #2563eb;
+      --secondary: #1e293b;
+      --bg: #f8fafc;
+      --accent: #3b82f6;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      background: var(--bg);
+      color: var(--secondary);
+      line-height: 1.6;
+    }
+
+    header {
+      background: var(--primary);
+      color: white;
+      text-align: center;
+      padding: 3rem 1rem;
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    header p {
+      max-width: 700px;
+      margin: 0 auto;
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+
+    .btn {
+      display: inline-block;
+      background: white;
+      color: var(--primary);
+      padding: 0.75rem 1.5rem;
+      margin: 1rem 0.5rem;
+      border-radius: 6px;
+      font-weight: bold;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+
+    .btn:hover {
+      background: #e2e8f0;
+    }
+
+    section {
+      max-width: 900px;
+      margin: 3rem auto;
+      padding: 0 1rem;
+    }
+
+    h2 {
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+
+    th, td {
+      padding: 0.75rem;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    th {
+      background: #f1f5f9;
+      text-align: left;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      background: var(--secondary);
+      color: white;
+      font-size: 0.9rem;
+    }
+
+    code {
+      background: #e2e8f0;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+
+    .links a {
+      display: inline-block;
+      margin: 0.5rem 0.5rem 0;
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .links a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>FileUpload API</h1>
+    <p>
+      A lightweight REST API for uploading, managing, and restoring user files — built with Go, Gin, and GORM.
+    </p>
+    <div>
+      <a class="btn" href="http://file-upload-c2qe.onrender.com/api" target="_blank">Live API</a>
+      <a class="btn" href="https://github.com/dev-tams/file-upload" target="_blank">GitHub Repo</a>
+    </div>
+  </header>
+
+  <section>
+    <h2>About the API</h2>
+    <p>
+      The FileUpload API provides endpoints for user registration, authentication, and file management. 
+      It supports uploading, downloading, soft deletion, and restoration of files — complete with 
+      role-based access control for admin and standard users.
+    </p>
+    <ul>
+      <li>🧱 Built with Go, Gin, and GORM</li>
+      <li>🔐 JWT-based authentication</li>
+      <li>🗂 Organized file storage with validation</li>
+      <li>🧩 Soft delete and restore functionality</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Endpoints Overview</h2>
+    <table>
+      <tr><th>Method</th><th>Endpoint</th><th>Description</th></tr>
+      <tr><td>POST</td><td>/api/register</td><td>Register a new user</td></tr>
+      <tr><td>POST</td><td>/api/login</td><td>Login and receive JWT token</td></tr>
+      <tr><td>POST</td><td>/api/files/upload</td><td>Upload a file</td></tr>
+      <tr><td>GET</td><td>/api/files</td><td>Get all uploaded files</td></tr>
+      <tr><td>GET</td><td>/api/files/:id</td><td>Fetch file details</td></tr>
+      <tr><td>DELETE</td><td>/api/files/:id</td><td>Soft delete file</td></tr>
+      <tr><td>PATCH</td><td>/api/files/restore/:id</td><td>Restore soft-deleted file</td></tr>
+      <tr><td>GET</td><td>/api/admin/users</td><td>Fetch all users (admin only)</td></tr>
+      <tr><td>PATCH</td><td>/api/admin/users/restore/:email</td><td>Restore soft-deleted user</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <h2>Developer Info</h2>
+    <p>
+      <strong>Base URL:</strong> <code>http://file-upload-c2qe.onrender.com/api</code><br>
+      <strong>Auth Header:</strong> <code>Authorization: Bearer &lt;token&gt;</code>
+    </p>
+    <p>
+      Example request:
+    </p>
+    <pre><code>curl -H "Authorization: Bearer &lt;token&gt;" \
+http://file-upload-c2qe.onrender.com/api/files</code></pre>
+    <div class="links">
+      <a href="https://github.com/dev-tams/file-upload" target="_blank">🔗 View GitHub Repository</a><br>
+      <a href="http://file-upload-c2qe.onrender.com/api" target="_blank">🌍 Explore the Live API</a>
+    </div>
+  </section>
+
+  <footer>
+    Built with ❤️ by Tammy Alemu — 2025<br>
+    Go + Gin + GORM Powered API
+  </footer>
+
+</body>
+</html>
