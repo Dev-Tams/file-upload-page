@@ -131,10 +131,10 @@
       role-based access control for admin and standard users.
     </p>
     <ul>
-      <li>🧱 Built with Go, Gin, and GORM</li>
-      <li>🔐 JWT-based authentication</li>
-      <li>🗂 Organized file storage with validation</li>
-      <li>🧩 Soft delete and restore functionality</li>
+      <li> Built with Go, Gin, and GORM</li>
+      <li> JWT-based authentication</li>
+      <li> Organized file storage with validation</li>
+      <li> Soft delete and restore functionality</li>
     </ul>
   </section>
 
@@ -171,6 +171,121 @@ http://file-upload-c2qe.onrender.com/api/files</code></pre>
     </div>
   </section>
 
+  <section id="apiTester" style="margin-top: 3rem;">
+  <h2> Try the API</h2>
+  <p>Test live API endpoints right from your browser.</p>
+
+  <form id="apiForm">
+    <label>Choose Endpoint:</label>
+    <select id="endpoint" style="padding: 0.5rem; border-radius: 6px; margin-bottom: 1rem;">
+      <option value="/api/login">POST /api/login</option>
+      <option value="/api/register">POST /api/register</option>
+      <option value="/api/files">GET /api/files</option>
+      <option value="/api/restore/:id">PUT /api/restore/:id</option>
+    </select>
+
+    <div id="inputArea">
+      <!-- Dynamic inputs will appear here -->
+    </div>
+
+    <button 
+      type="submit" 
+      style="background: var(--primary, #2563eb); color: white; padding: 0.6rem 1.2rem; border: none; border-radius: 6px; cursor: pointer;">
+      Send Request
+    </button>
+  </form>
+
+  <pre id="responseBox" 
+    style="text-align:left; background:#0f172a; color:#e2e8f0; padding:1rem; border-radius:8px; margin-top:1rem; overflow:auto; max-height:400px;">
+  </pre>
+</section>
+
+<script>
+const apiBase = "https://file-upload-c2qe.onrender.com"; // your Render API URL
+const endpointSelect = document.getElementById("endpoint");
+const inputArea = document.getElementById("inputArea");
+const form = document.getElementById("apiForm");
+const responseBox = document.getElementById("responseBox");
+
+// Templates for dynamic inputs
+const templates = {
+  "/api/login": `
+    <input placeholder="Email" id="email" required style="display:block;margin-bottom:0.5rem;width:80%;padding:0.5rem;">
+    <input placeholder="Password" id="password" type="password" required style="display:block;margin-bottom:0.5rem;width:80%;padding:0.5rem;">
+  `,
+  "/api/register": `
+    <input placeholder="Name" id="name" required style="display:block;margin-bottom:0.5rem;width:80%;padding:0.5rem;">
+    <input placeholder="Email" id="email" required style="display:block;margin-bottom:0.5rem;width:80%;padding:0.5rem;">
+    <input placeholder="Password" id="password" type="password" required style="display:block;margin-bottom:0.5rem;width:80%;padding:0.5rem;">
+  `,
+  "/api/files": `
+    <input placeholder="JWT Token" id="token" style="display:block;margin-bottom:0.5rem;width:80%;padding:0.5rem;">
+  `,
+  "/api/restore/:id": `
+    <input placeholder="User ID to restore" id="userId" required style="display:block;margin-bottom:0.5rem;width:80%;padding:0.5rem;">
+    <input placeholder="JWT Token (Admin)" id="token" required style="display:block;margin-bottom:0.5rem;width:80%;padding:0.5rem;">
+  `
+};
+
+// Update form fields when endpoint changes
+endpointSelect.addEventListener("change", () => {
+  inputArea.innerHTML = templates[endpointSelect.value];
+});
+
+// Initialize default fields
+inputArea.innerHTML = templates["/api/login"];
+
+// Handle form submission
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  responseBox.textContent = " Sending request...";
+
+  const endpoint = endpointSelect.value;
+  let url = `${apiBase}${endpoint}`;
+  let method = "GET";
+  let headers = { "Content-Type": "application/json" };
+  let body;
+
+  try {
+    if (endpoint === "/api/login") {
+      method = "POST";
+      body = JSON.stringify({
+        email: document.getElementById("email").value,
+        password: document.getElementById("password").value
+      });
+    } else if (endpoint === "/api/register") {
+      method = "POST";
+      body = JSON.stringify({
+        name: document.getElementById("name").value,
+        email: document.getElementById("email").value,
+        password: document.getElementById("password").value
+      });
+    } else if (endpoint === "/api/files") {
+      method = "GET";
+      headers["Authorization"] = `Bearer ${document.getElementById("token").value}`;
+    } else if (endpoint === "/api/restore/:id") {
+      method = "PUT";
+      const id = document.getElementById("userId").value;
+      url = `${apiBase}/api/restore/${id}`;
+      headers["Authorization"] = `Bearer ${document.getElementById("token").value}`;
+    }
+
+    const res = await fetch(url, { method, headers, body });
+    const text = await res.text();
+
+    try {
+      const data = JSON.parse(text);
+      responseBox.textContent = JSON.stringify(data, null, 2);
+    } catch {
+      responseBox.textContent = text;
+    }
+  } catch (err) {
+    responseBox.textContent = " Error: " + err.message;
+  }
+});
+</script>
+
+
   <footer>
     Built with ❤️ by Tammy Alemu — 2025<br>
     Go + Gin + GORM Powered API
@@ -178,3 +293,4 @@ http://file-upload-c2qe.onrender.com/api/files</code></pre>
 
 </body>
 </html>
+
