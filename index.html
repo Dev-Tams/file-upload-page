@@ -11,6 +11,7 @@
       --secondary: #1e293b;
       --bg: #f8fafc;
       --accent: #3b82f6;
+      --text-light: #f1f5f9;
     }
 
     body {
@@ -25,7 +26,7 @@
       background: var(--primary);
       color: white;
       text-align: center;
-      padding: 3rem 1rem;
+      padding: 3rem 1rem 2rem;
     }
 
     header h1 {
@@ -35,9 +36,9 @@
 
     header p {
       max-width: 700px;
-      margin: 0 auto;
+      margin: 0 auto 1rem;
       font-size: 1.1rem;
-      opacity: 0.9;
+      opacity: 0.95;
     }
 
     .btn {
@@ -45,50 +46,60 @@
       background: white;
       color: var(--primary);
       padding: 0.75rem 1.5rem;
-      margin: 1rem 0.5rem;
+      margin: 0.5rem;
       border-radius: 6px;
-      font-weight: bold;
+      font-weight: 600;
       text-decoration: none;
-      transition: background 0.2s;
+      transition: 0.2s;
     }
 
     .btn:hover {
       background: #e2e8f0;
     }
 
-    section {
-      max-width: 900px;
-      margin: 3rem auto;
+    main {
+      max-width: 1000px;
+      margin: 2rem auto;
       padding: 0 1rem;
+    }
+
+    section {
+      margin-bottom: 3rem;
     }
 
     h2 {
       color: var(--primary);
+      border-left: 4px solid var(--accent);
+      padding-left: 0.5rem;
       margin-bottom: 0.5rem;
+    }
+
+    p, li {
+      font-size: 1rem;
+    }
+
+    ul {
+      margin-left: 1.25rem;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
       margin-top: 1rem;
+      overflow-x: auto;
+      display: block;
     }
 
     th, td {
       padding: 0.75rem;
       border-bottom: 1px solid #e5e7eb;
+      text-align: left;
+      font-size: 0.95rem;
+      word-break: break-word;
     }
 
     th {
       background: #f1f5f9;
-      text-align: left;
-    }
-
-    footer {
-      text-align: center;
-      padding: 2rem;
-      background: var(--secondary);
-      color: white;
-      font-size: 0.9rem;
     }
 
     code {
@@ -98,199 +109,127 @@
       font-family: monospace;
     }
 
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      background: var(--secondary);
+      color: var(--text-light);
+      font-size: 0.9rem;
+    }
+
     .links a {
       display: inline-block;
-      margin: 0.5rem 0.5rem 0;
       color: var(--accent);
       text-decoration: none;
+      margin-right: 0.5rem;
+      font-weight: 500;
     }
 
     .links a:hover {
       text-decoration: underline;
     }
+
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 1.9rem;
+      }
+      header p {
+        font-size: 1rem;
+      }
+      th, td {
+        font-size: 0.9rem;
+      }
+      .btn {
+        padding: 0.6rem 1rem;
+      }
+    }
   </style>
 </head>
 <body>
-
   <header>
     <h1>FileUpload API</h1>
-    <p>
-      A lightweight REST API for uploading, managing, and restoring user files — built with Go, Gin, and GORM.
-    </p>
+    <p>A secure REST API for managing user files — built with Go, Gin, and GORM.</p>
     <div>
-      <a class="btn" href="http://file-upload-c2qe.onrender.com/api" target="_blank">Live API</a>
+      <a class="btn" href="https://file-upload-c2qe.onrender.com/api" target="_blank">Live API</a>
       <a class="btn" href="https://github.com/dev-tams/file-upload" target="_blank">GitHub Repo</a>
     </div>
   </header>
 
-  <section>
-    <h2>About the API</h2>
-    <p>
-      The FileUpload API provides endpoints for user registration, authentication, and file management. 
-      It supports uploading, downloading, soft deletion, and restoration of files — complete with 
-      role-based access control for admin and standard users.
-    </p>
-    <ul>
-      <li> Built with Go, Gin, and GORM</li>
-      <li> JWT-based authentication</li>
-      <li> Organized file storage with validation</li>
-      <li> Soft delete and restore functionality</li>
-    </ul>
-  </section>
+  <main>
+    <section>
+      <h2>📦 About the API</h2>
+      <p>
+        The <strong>FileUpload API</strong> allows users to upload, manage, and restore files with role-based access control.
+        It supports soft deletes, idempotent uploads, and administrative recovery.
+      </p>
+      <ul>
+        <li>Upload multiple files per request (UUID-tied)</li>
+        <li>Idempotent uploads — safe against network failures</li>
+        <li>Soft delete & recovery (within 30 days)</li>
+        <li>Admin & Super Admin role hierarchy</li>
+      </ul>
+    </section>
 
-  <section>
-    <h2>Endpoints Overview</h2>
-    <table>
-      <tr><th>Method</th><th>Endpoint</th><th>Description</th></tr>
-      <tr><td>POST</td><td>/api/register</td><td>Register a new user</td></tr>
-      <tr><td>POST</td><td>/api/login</td><td>Login and receive JWT token</td></tr>
-      <tr><td>POST</td><td>/api/files/upload</td><td>Upload a file</td></tr>
-      <tr><td>GET</td><td>/api/files</td><td>Get all uploaded files</td></tr>
-      <tr><td>GET</td><td>/api/files/:id</td><td>Fetch file details</td></tr>
-      <tr><td>DELETE</td><td>/api/files/:id</td><td>Soft delete file</td></tr>
-      <tr><td>PATCH</td><td>/api/files/restore/:id</td><td>Restore soft-deleted file</td></tr>
-      <tr><td>GET</td><td>/api/admin/users</td><td>Fetch all users (admin only)</td></tr>
-      <tr><td>PATCH</td><td>/api/admin/users/restore/:email</td><td>Restore soft-deleted user</td></tr>
-    </table>
-  </section>
+    <section>
+      <h2>🔐 Authentication</h2>
+      <p>
+        All secure endpoints require JWT authentication via the header:
+      </p>
+      <code>Authorization: Bearer &lt;token&gt;</code>
+    </section>
 
-  <section>
-    <h2>Developer Info</h2>
-    <p>
-      <strong>Base URL:</strong> <code>http://file-upload-c2qe.onrender.com/api</code><br>
-      <strong>Auth Header:</strong> <code>Authorization: Bearer &lt;token&gt;</code>
-    </p>
-    <p>
-      Example request:
-    </p>
-    <pre><code>curl -H "Authorization: Bearer &lt;token&gt;" \
-http://file-upload-c2qe.onrender.com/api/files</code></pre>
-    <div class="links">
-      <a href="https://github.com/dev-tams/file-upload" target="_blank">🔗 View GitHub Repository</a><br>
-      <a href="http://file-upload-c2qe.onrender.com/api" target="_blank">🌍 Explore the Live API</a>
-    </div>
-  </section>
+    <section>
+      <h2>🧾 Endpoints Overview</h2>
+      <table>
+        <tr><th>Method</th><th>Endpoint</th><th>Description</th></tr>
+        <tr><td>POST</td><td>/api/register</td><td>Register a new user</td></tr>
+        <tr><td>POST</td><td>/api/login</td><td>Login and receive JWT token</td></tr>
+        <tr><td>POST</td><td>/api/files/upload</td><td>Upload one or more files</td></tr>
+        <tr><td>GET</td><td>/api/files</td><td>Get all files for authenticated user</td></tr>
+        <tr><td>GET</td><td>/api/files/:id</td><td>Fetch a single file</td></tr>
+        <tr><td>DELETE</td><td>/api/files/:id</td><td>Soft delete a file</td></tr>
+        <tr><td>PATCH</td><td>/api/files/restore/:id</td><td>Admin restores a deleted file</td></tr>
+        <tr><td>GET</td><td>/api/admin/users</td><td>Fetch all users (admin only)</td></tr>
+        <tr><td>PATCH</td><td>/api/admin/users/restore/:email</td><td>Restore soft-deleted user</td></tr>
+      </table>
+    </section>
 
-  <section id="apiTester" style="margin-top: 3rem;">
-  <h2> Try the API</h2>
-  <p>Test live API endpoints right from your browser.</p>
+    <section>
+      <h2>🧑‍💼 Admin & Super Admin</h2>
+      <p>
+        Super Admin is created via CLI seeding (using <code>--seed-admin</code>) with credentials from environment variables.
+      </p>
+      <ul>
+        <li>Fetch and manage users</li>
+        <li>Promote users to admin</li>
+        <li>Set upload limits per user or globally</li>
+        <li>View and restore deleted files/users</li>
+      </ul>
+    </section>
 
-  <form id="apiForm">
-    <label>Choose Endpoint:</label>
-    <select id="endpoint" style="padding: 0.5rem; border-radius: 6px; margin-bottom: 1rem;">
-      <option value="/api/login">POST /api/login</option>
-      <option value="/api/register">POST /api/register</option>
-      <option value="/api/files">GET /api/files</option>
-      <option value="/api/restore/:id">PUT /api/restore/:id</option>
-    </select>
+    <section>
+      <h2>🚀 Future Roadmap</h2>
+      <ul>
+        <li>Super Admin creates organizations</li>
+        <li>Organization-level storage control</li>
+        <li>Scoped admin privileges</li>
+        <li>Tiered upload limits (Free vs Premium users)</li>
+      </ul>
+    </section>
 
-    <div id="inputArea">
-      <!-- Dynamic inputs will appear here -->
-    </div>
-
-    <button 
-      type="submit" 
-      style="background: var(--primary, #2563eb); color: white; padding: 0.6rem 1.2rem; border: none; border-radius: 6px; cursor: pointer;">
-      Send Request
-    </button>
-  </form>
-
-  <pre id="responseBox" 
-    style="text-align:left; background:#0f172a; color:#e2e8f0; padding:1rem; border-radius:8px; margin-top:1rem; overflow:auto; max-height:400px;">
-  </pre>
-</section>
-
-<script>
-const apiBase = "https://file-upload-c2qe.onrender.com"; // your Render API URL
-const endpointSelect = document.getElementById("endpoint");
-const inputArea = document.getElementById("inputArea");
-const form = document.getElementById("apiForm");
-const responseBox = document.getElementById("responseBox");
-
-// Templates for dynamic inputs
-const templates = {
-  "/api/login": `
-    <input placeholder="Email" id="email" required style="display:block;margin-bottom:0.5rem;width:80%;padding:0.5rem;">
-    <input placeholder="Password" id="password" type="password" required style="display:block;margin-bottom:0.5rem;width:80%;padding:0.5rem;">
-  `,
-  "/api/register": `
-    <input placeholder="Name" id="name" required style="display:block;margin-bottom:0.5rem;width:80%;padding:0.5rem;">
-    <input placeholder="Email" id="email" required style="display:block;margin-bottom:0.5rem;width:80%;padding:0.5rem;">
-    <input placeholder="Password" id="password" type="password" required style="display:block;margin-bottom:0.5rem;width:80%;padding:0.5rem;">
-  `,
-  "/api/files": `
-    <input placeholder="JWT Token" id="token" style="display:block;margin-bottom:0.5rem;width:80%;padding:0.5rem;">
-  `,
-  "/api/restore/:id": `
-    <input placeholder="User ID to restore" id="userId" required style="display:block;margin-bottom:0.5rem;width:80%;padding:0.5rem;">
-    <input placeholder="JWT Token (Admin)" id="token" required style="display:block;margin-bottom:0.5rem;width:80%;padding:0.5rem;">
-  `
-};
-
-// Update form fields when endpoint changes
-endpointSelect.addEventListener("change", () => {
-  inputArea.innerHTML = templates[endpointSelect.value];
-});
-
-// Initialize default fields
-inputArea.innerHTML = templates["/api/login"];
-
-// Handle form submission
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  responseBox.textContent = " Sending request...";
-
-  const endpoint = endpointSelect.value;
-  let url = `${apiBase}${endpoint}`;
-  let method = "GET";
-  let headers = { "Content-Type": "application/json" };
-  let body;
-
-  try {
-    if (endpoint === "/api/login") {
-      method = "POST";
-      body = JSON.stringify({
-        email: document.getElementById("email").value,
-        password: document.getElementById("password").value
-      });
-    } else if (endpoint === "/api/register") {
-      method = "POST";
-      body = JSON.stringify({
-        name: document.getElementById("name").value,
-        email: document.getElementById("email").value,
-        password: document.getElementById("password").value
-      });
-    } else if (endpoint === "/api/files") {
-      method = "GET";
-      headers["Authorization"] = `Bearer ${document.getElementById("token").value}`;
-    } else if (endpoint === "/api/restore/:id") {
-      method = "PUT";
-      const id = document.getElementById("userId").value;
-      url = `${apiBase}/api/restore/${id}`;
-      headers["Authorization"] = `Bearer ${document.getElementById("token").value}`;
-    }
-
-    const res = await fetch(url, { method, headers, body });
-    const text = await res.text();
-
-    try {
-      const data = JSON.parse(text);
-      responseBox.textContent = JSON.stringify(data, null, 2);
-    } catch {
-      responseBox.textContent = text;
-    }
-  } catch (err) {
-    responseBox.textContent = " Error: " + err.message;
-  }
-});
-</script>
-
+    <section>
+      <h2>🔗 Developer Resources</h2>
+      <p><strong>Base URL:</strong> <code>https://file-upload-c2qe.onrender.com/api</code></p>
+      <div class="links">
+        <a href="https://file-upload-c2qe.onrender.com/api" target="_blank">🌍 Live API</a>
+        <a href="https://github.com/dev-tams/file-upload" target="_blank">💻 GitHub Repository</a>
+      </div>
+    </section>
+  </main>
 
   <footer>
-    Built with ❤️ by Tammy Alemu — 2025<br>
-    Go + Gin + GORM Powered API
+    Built with ❤️ by <strong>Tammy Alemu</strong> — 2025<br>
+    Powered by Go + Gin + GORM
   </footer>
-
 </body>
 </html>
-
