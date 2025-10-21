@@ -59,7 +59,6 @@
           opts.method = 'POST';
           opts.headers['Content-Type'] = 'application/json';
           opts.body = JSON.stringify({
-            name: document.getElementById('name').value,
             email: document.getElementById('email').value,
             password: document.getElementById('password').value
           });
